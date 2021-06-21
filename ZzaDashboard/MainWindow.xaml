@@ -1,0 +1,58 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:customer="clr-namespace:ZzaDashboard.Customers"
+        xmlns:order="clr-namespace:ZzaDashboard.Orders"
+        xmlns:prep="clr-namespace:ZzaDashboard.OrderPrep"
+        xmlns:local="clr-namespace:ZzaDashboard"
+        x:Class="ZzaDashboard.MainWindow"
+        Title="MainWindow"
+        Height="350"
+        Width="525">
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type customer:CustomerListViewModel}">
+            <customer:CustomerListView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type order:OrderViewModel}">
+            <order:OrderView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type prep:OrderPrepViewModel}">
+            <prep:OrderPrepView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type customer:AddEditCustomerViewModel}">
+            <customer:AddEditCustomerView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              x:Name="NavBar">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Customers"
+                    Grid.Column="0"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="customers"/>
+            <Button Content="Order Prep"
+                    Grid.Column="2"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="orderPrep"/>
+        </Grid>
+
+        <ContentControl Grid.Row="1" 
+                        Content="{Binding CurrentViewModel, TargetNullValue='There is no content'}"/>
+
+</Grid>
+</Window>
