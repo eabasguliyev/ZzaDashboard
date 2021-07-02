@@ -19,9 +19,7 @@ namespace ZzaDashboard
         {
             if (Object.Equals(member, val))
                 return;
-
             member = val;
-
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }

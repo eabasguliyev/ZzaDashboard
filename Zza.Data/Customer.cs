@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using Zza.Data.Annotations;
 
 namespace Zza.Data
 {
-    public class Customer
+    public class Customer:INotifyPropertyChanged
     {
         public Customer()
         {
@@ -24,5 +27,12 @@ namespace Zza.Data
         public string State { get; set; }
         public string Zip { get; set; }
         public List<Order> Orders { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

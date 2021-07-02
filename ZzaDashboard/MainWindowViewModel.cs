@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Windows.Input;
+using Unity;
 using Zza.Data;
 using ZzaDashboard.Customers;
 using ZzaDashboard.OrderPrep;
@@ -17,21 +18,24 @@ namespace ZzaDashboard
         private OrderPrepViewModel _orderPrepViewModel;
         private AddEditCustomerViewModel _addEditCustomerViewModel;
         private BindableBase _currentViewModel;
-
-
         public MainWindowViewModel()
         {
-            _customerListViewModel = new CustomerListViewModel();
+            _customerListViewModel = ContainerHelper.Container.Resolve<CustomerListViewModel>();
             _orderViewModel = new OrderViewModel();
             _orderPrepViewModel = new OrderPrepViewModel();
-            _addEditCustomerViewModel = new AddEditCustomerViewModel();
-
+            _addEditCustomerViewModel = ContainerHelper.Container.Resolve<AddEditCustomerViewModel>();
+            _addEditCustomerViewModel.Done += NavToCustomerList;
 
             _customerListViewModel.PlaceOrderRequested += NavToOrder;
             _customerListViewModel.AddCustomerRequested += NavToAddCustomer;
             _customerListViewModel.EditCustomerRequested += NavToEditCustomer;
 
             NavCommand = new RelayCommand<string>(OnNav);
+        }
+
+        private void NavToCustomerList()
+        {
+            CurrentViewModel = _customerListViewModel;
         }
 
         public ICommand NavCommand { get; private set; }
